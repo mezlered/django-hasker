@@ -1,5 +1,5 @@
 # Hasker 
-Q/A site, analogue of stackoverflow.com
+Q/A site, that partially implements of stackoverflow.com
 
 ### Requirements
 - Python (3.6+)
@@ -9,7 +9,7 @@ Q/A site, analogue of stackoverflow.com
 
 1. Install requirements
 ```
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
 ```
 
 2. Apply migrations
