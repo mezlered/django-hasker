@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Ask a public question</h2>
+
+<form method="POST">
+    <div class="form-group">
+      <label for="formGroupExampleInput">Title</label>
+      <input 
+        type="text"
+        class="form-control"
+        id="formGroupExampleInput"
+        name="title"
+        placeholder="Be specific and imagine you’re asking a question to another person"
+        required=Tue
+        {% if form.title.value != None %}value="{{ form.title.value }}"{% endif %}
+      >
+      {% if form.title.errors %}
+      <div class="text-danger">{{ form.title.errors }}</div>
+      {% endif %}
+    </div>
+    <div class="form-group shadow-textarea">
+        <label for="formGroupExampleInput">Description</label>
+        <textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="5" name="description" text="" placeholder="Include all the information someone would need to answer your question" required=True>{% if form.description.value != None %}{{ form.description.value }} {% endif %}</textarea>
+        {% if form.description.errors %}
+        <div class="text-danger">{{ form.description.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+      <label for="formGroupExampleInput2">Tags</label>
+      <input
+        type="text"
+        class="form-control"
+        id="formGroupExampleInput2"
+        name="tags"
+        placeholder="Add up to 5 tags to describe what your question is about (python, js, server)"
+        {% if form.tags.value != None %}value="{{ form.tags.value }}"{% endif %}
+      >
+      {% if form.tags.errors %}
+      <div class="text-danger">{{ form.tags.errors }}</div>
+      {% endif %}
+    </div>
+    <button class="btn btn-primary">Ask</button>
+    {% csrf_token %}
+  </form>
+
+{% endblock %}

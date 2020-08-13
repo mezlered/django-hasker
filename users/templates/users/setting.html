@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+    <form method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <p class="h3 mb-4">Settings</p>
+        <hr>
+        <div class="row justify-content-md-start">
+          
+            <div class="col col-lg-6">
+                Uername:
+                <input type="email" class="form-control mb-4" name="username"
+                disabled
+                value="{{ object.username }}"
+                >
+                E-mail:
+                <input type="email" class="form-control mb-4" placeholder="E-mail" name="email"
+                        required
+                        {% if form.email.value != None %}value="{{ form.email.value|stringformat:'s' }}"{% endif %} 
+                >
+               {% if form.email.errors %}
+                <div class="text-danger">{{ form.email.errors }}</div>
+                {% endif %}
+                Avatar:
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile1" name="photo">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+                {% if form.photo.errors %}
+                    <div class="text-danger">{{ form.photo.errors }}</div>
+                {% endif %}
+                <button class="btn btn-info my-4 btn-block" type="submit">Save</button>
+
+            </div>
+            <div class="col col-lg-6">
+                <img src="{{ object.photo.url }}" alt="" class="img-thumbnail float-right" width="200" height="200">
+            </div>
+        </div>
+      </form>
+{% endblock %}

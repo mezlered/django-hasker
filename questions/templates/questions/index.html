@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <div class="row">
+    <div class="d-flex justify-content-center col-sm">
+      <a href="{% url 'question:index' %}" style="font-size:25px" class="badge badge-light item">New questions</a>
+    </div>
+    <div class="d-flex justify-content-center col-sm">
+      <a href="{% url 'question:top_question' %}?order=votes" style="font-size:25px" class="badge badge-light item">Hot questions</a>
+    </div>
+  </div>
+  <hr>
+  <h2>Questions</h2>
+  {% for question in question_list %}
+    <div class="row">
+      <div class="col-1 text-center">
+        {{ question.rating }}
+        Vote{{ question.rating|pluralize }}
+      </div>
+      <div class="col-2 text-center">
+        {{ question.answers_count }} <br>
+        Answer{{ question.answers_count|pluralize }}
+      </div>
+      <div class="col">
+        <a href="{% url 'question:question' slug=question.title %}">{{ question.title }}</a><br>
+        <div class="short-description">
+          {% if question.description|length > 150 %}
+          {{ question.description|slice:":150"}} ...
+          {% else %}
+          {{ question.description }}
+          {% endif %}
+        </div>
+        {% for tag in question.tags.all %}
+        <a class="badge badge-primary" href="{% url 'question:tag' slug=tag.name %}">{{ tag }}</a>
+        {% endfor %}
+      </div>
+      <div class="col-3 text-center">
+        <a href="{% url 'question:question_user' username=question.author %}">{{ question.author }}</a>
+        <p class="font-weight-bold text-center", style="font-size:10px" > asked {{ question.date_publication|timesince }} ago</p>
+      </div>
+    </div>
+    <hr>
+  {% endfor %}
+  {% include 'questions/pagination.html' with page=page_obj page_range=page_obj.paginator.page_range %}
+{% endblock %}

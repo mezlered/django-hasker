@@ -1,0 +1,6 @@
+autopep8==1.5.2
+Django==2.2
+ipython==7.14.0
+Pillow==7.2.0
+psycopg2==2.8.5
+python-decouple==3.3

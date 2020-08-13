@@ -1,0 +1,82 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"> 
+  <link href="{% static 'css/main.css' %}" rel="stylesheet"> 
+
+
+  <title>{% block title %}
+    {% endblock %}
+  </title>
+</head>
+<body>
+
+  <div class="container">
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand" style="font-size:35px" href="{% url 'question:index' %}">Hasker</a>
+      <form class="form-inline" method="get" action="{% url 'question:search' %}">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search_">
+        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      {% if request.user.is_authenticated %}
+      <div>
+        <div class="d-inline-block">
+          <a class="nav-link " href="{% url 'users:settings' %}"><img src="{{ request.user.photo.url }}" alt="" class="rounded float-right" width="50" height="50"></a>
+          
+        </div>
+        <div class="d-inline-block">
+          <a class="nav-link " href="{% url 'users:settings' %}">{{ request.user }}</a>
+          <a class="nav-link " href="{% url 'users:logout' %}"><ion-icon name="exit-outline" size="large"></ion-icon></a>
+        </div>
+      </div>
+      {% else %}
+      <div class="d-flex justify-content-end">
+        <a class="nav-link my-2 my-sm-0" href="{% url 'users:login' %}">Log in</a>
+        <a class="nav-link btn btn-outline-primary my-2 my-sm-0" href="{% url 'users:signup' %}">Sign up</a>
+      </div>
+      {% endif %}
+    </nav>
+    <hr>
+    <div class="row">
+      <div class="col">
+        {% block content %}
+        {% endblock %}
+      </div>
+      <div class="col-3">
+        {% if request.user.is_authenticated %}
+        <div class="d-flex justify-content-center">
+          <a class="btn btn-primary" href="{% url 'question:ask' %}">Ask</a>
+        </div>
+        {% else %}
+        <div class="d-flex justify-content-center">
+          <a class="btn btn-primary disabled" href="">Ask</a>
+        </div>
+        {% endif %}
+        <br>
+        <h2 class="d-flex justify-content-center">Trending</h2>
+        {% for question in trending %}
+        <div class="">
+          <a href="{% url 'question:question' slug=question.title %}"><span class="badge badge-light">{{ question.rating }} vote{{ question.rating|pluralize }}</span>  {{ question.title }}</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="footer-copyright text-center py-3" >
+      <a href="{% url 'question:index' %}"> Hasker</a>
+    </div>
+  </footer>
+   <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/jquery.slim.min.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+</body>
+
+</html>

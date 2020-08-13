@@ -1,0 +1,15 @@
+<nav aria-label="Page navigation example">
+    <ul class="pagination pg-blue">
+    <li class="page-item">
+        <a class="page-link" {% if page.has_previous %} onclick="return true" href="?page={{ page.previous_page_number }}"{% else %} onclick="return false" {% endif %} >Previous</a>
+    </li>
+    {% for number in page_range %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ number }}">{{ number }}</a>
+    </li>
+    {% endfor %}
+    <li class="page-item">
+        <a class="page-link" {% if page.has_next %} onclick="return true" href="?page={{ page.next_page_number }}"{% else %} onclick="return false" {% endif %} >Next</a>
+    </li>
+    </ul>
+  </nav>

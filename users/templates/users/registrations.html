@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center mb-5 mt-5">
+  <div class="col-md-6 col-md-offset-3 text-center">
+
+    <form method="POST" enctype="multipart/form-data" >
+      {% csrf_token %}
+      <p class="h4 mb-4">Sign up</p>
+      <div class="input-group">
+        <input type="text" class="form-control mb-4" placeholder="Username" name="username"
+              required
+              {% if form.username.value != None %}value="{{ form.username.value|stringformat:'s' }}"{% endif %}
+        >
+      </div>
+
+      {% if form.username.errors %}
+      <div class="text-danger">{{ form.username.errors }}</div>
+      {% endif %}
+
+      <input type="email" class="form-control mb-4" placeholder="E-mail" name="email"
+            required
+            {% if form.email.value != None %}value="{{ form.email.value|stringformat:'s' }}"{% endif %} 
+      >
+      {% if form.email.errors %}
+      <div class="text-danger">{{ form.email.errors }}</div>
+      {% endif %}
+
+      <input type="password"  class="form-control" placeholder="Password" 
+            name="password1" aria-describedby="defaultRegisterFormPasswordHelpBlock"
+            required
+            {% if form.password1.value != None %}value="{{ form.password1.value|stringformat:'s' }}"{% endif %}
+        >
+      <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-0">
+        At least 8 characters
+      </small>
+      {% if form.password1.errors %}
+        <div class="text-danger">{{ form.password1.errors }}</div>
+      {% endif %}
+
+      <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Confirm password"
+            name="password2" aria-describedby="defaultRegisterFormPasswordHelpBlock"
+            required
+            {% if form.password2.value != None %}value="{{ form.password2.value|stringformat:'s' }}"{% endif %}
+       >
+      <small class="form-text text-muted mb-4"></small>
+      {% if form.password2.errors %}
+        <div class="text-danger">{{ form.password2.errors }}</div>
+      {% endif %}
+    
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="customFile1" name="photo">
+        <label class="custom-file-label" for="customFile">Choose file</label>
+      </div>
+      {% if form.photo.errors %}
+        <div class="text-danger">{{ form.photo.errors }}</div>
+      {% endif %}
+
+      <button class="btn btn-info my-4 btn-block" type="submit">Sign up</button>
+
+    </form>
+  </div>
+</div>
+
+{% endblock %}

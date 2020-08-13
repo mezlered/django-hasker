@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="row">
+  <div class="col-1 text-center">
+    <div class="votes" data-target="{{ question.pk }}" data-url="{% url 'question:vote_answer' %}">
+      <div class="rating--UP-DOWN" nane="up_booton" data-value="1">
+          <ion-icon class="icon-arrow" name="chevron-up-outline" size="large"></ion-icon>
+      </div>
+      <span class="ratig">{{ question.rating }}</span>
+      <div class="rating--UP-DOWN" nane="down_booton" data-value="-1" >
+          <ion-icon class="icon-arrow" name="chevron-down-outline" size="large" ></ion-icon>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+  <h3>{{ question.title }}</h3>
+  <p>{{ question.description }}</p>
+  {% for tag in question.tags.all %}
+    <a class="badge badge-primary" href="{% url 'question:tag' slug=tag.name %}">{{ tag }}</a>
+  {% endfor %}
+  </div>
+</div>
+  <div class="row">
+    <div class="col-9">
+    </div>
+    <div class="col">
+      <img src="{{ question.author.photo.url }}" alt="" class="rounded float-right " width="50" height="50">
+      <a href="{% url 'question:question_user' username=question.author %}">{{  question.author }}</a>
+      <p class="date-time" >{{ question.date_publication }}</p>
+    </div>
+  </div>
+<hr>
+<p class="font-weight-bold">{{ answers_count }} answer{{ answers_count|pluralize }}</p>
+<br>
+  {% for answer in answer_list %}
+  <div class="row">
+    <div class="col-1 text-center">
+      <div class="votes" data-target="{{ answer.pk }}" data-url="{% url 'question:vote_question' %}">
+        <div class="rating--UP-DOWN" nane="up_booton" data-value="1">
+            <ion-icon class="icon-arrow" name="chevron-up-outline" size="large"></ion-icon>
+        </div>
+        <span class="ratig">{{ answer.rating }}</span>
+        <div class="rating--UP-DOWN" nane="down_booton" data-value="-1" >
+            <ion-icon class="icon-arrow" name="chevron-down-outline" size="large" ></ion-icon>
+        </div>
+        
+        {% if request.user == question.author %}
+          <div class="approve-answ {% if answer.is_accepted %}is_accepted-mark{% endif %}" data-url="{% url 'question:approved_answer' pk=answer.pk %}">
+            <ion-icon class="icn" name="checkmark-outline" size="large"></ion-icon>
+          </div>
+        {% elif answer.is_accepted %}
+          <div class="approve-answ {% if answer.is_accepted %}is_accepted-mark{% endif %}">
+            <ion-icon class="icn" name="checkmark-outline" size="large"></ion-icon>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col">
+      {{ answer.description }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-9">
+    </div>
+    <div class="col">
+      <img src="{{ answer.author.photo.url }}" alt="" class="rounded float-right" width="50" height="50">
+      <a href="{% url 'question:question_user' username=answer.author %}">{{ answer.author }}</a>
+      <p class="date-time">{{ answer.date_publication }}</p>
+    </div>
+  </div>
+  <hr>
+  {% endfor %}
+   {% for error in form.non_field_errors %}
+    {{error}}
+  {% endfor %}
+   <h3>Your answer</h3>
+  <form method="POST">
+    <div class="form-group shadow-textarea">
+        <textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="4" name="description" placeholder="Write your answer here..."></textarea>
+        {% if form.description.errors %}
+        <div class="uk-form-danger">{{ form.description.errors }}</div>
+        {% endif %}
+    </div>
+      <button class="btn btn-primary">Answer</button>
+    {% csrf_token %}
+</form>
+<br>
+{% include 'questions/pagination.html' with page=page_obj page_range=page_obj.paginator.page_range %}
+
+{% endblock %}
