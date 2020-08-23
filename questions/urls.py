@@ -7,7 +7,7 @@ from .views import (
     )
 
 
-app_name = 'question'
+app_name = "question"
 
 
 urlpatterns = [

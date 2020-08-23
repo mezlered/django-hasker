@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.db.models import Q
-from django.http import HttpResponseForbidden, JsonResponse, request
+from django.http import HttpResponseForbidden, JsonResponse, Http404, request
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -20,7 +20,7 @@ class QuestionsListView(TredingMixin, ListView):
     """ List of all questions sorted default: -date_publication."""
 
     model = Question
-    template_name = 'questions/index.html'
+    template_name = "questions/index.html"
     paginate_by = PAGITATE_BY
 
     def get_queryset(self):
@@ -33,7 +33,7 @@ class QuestionTopView(QuestionsListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.order_by('-rating',)
+        return queryset.order_by("-rating",)
 
 
 class QuestionUserView(QuestionsListView):
@@ -70,7 +70,7 @@ class QuestionDetailView(TredingMixin, ListView):
 
 
     def dispatch(self, *args, **kwargs):
-        self.question = get_object_or_404(Question, title=self.kwargs['slug'])
+        self.question = get_object_or_404(Question, title=self.kwargs["slug"])
         return super().dispatch(*args, **kwargs)
 
     def get_queryset(self):
@@ -108,18 +108,19 @@ class QuestionDetailView(TredingMixin, ListView):
 
 
 class QuestionSearch(QuestionsListView):
-    '''
+    """
     Search by title and description of questions.
     Search for tag related questions
-    '''
+    """
 
-    search = ''
+    search = ""
     def get(self, *args, **kwargs):
-        self.search = self.request.GET.get('search_')
-        if self.search.startswith('tag:'):                #search tag
-            _, tag = self.search.split('tag:')
+        self.search = self.request.GET.get("search_")
+
+        if self.search.startswith("tag:"):                #search tag
+            _, tag = self.search.split("tag:")
             tag = tag.lower().strip()
-            return redirect('question:tag', slug=tag)
+            return redirect("question:tag", slug=tag)
         return super().get(*args, **kwargs)
 
     def get_queryset(self):
@@ -147,14 +148,14 @@ class AskView(TredingMixin, LoginRequiredMixin, CreateView):
         question.author = self.request.user
         question.save()
 
-        tags = form.cleaned_data['tags']
+        tags = form.cleaned_data["tags"]
         question.add_tags(tags)
 
         return redirect(self.success_url)
 
 
 def vote_answer(request):
-    '''Vote for a answer. Only AJAX request by post method.'''
+    """Vote for a answer. Only AJAX request by post method."""
 
     form = VoteForm(request.POST)
     if form.is_valid() and request.is_ajax():
@@ -172,12 +173,12 @@ def vote_answer(request):
 
 
 def vote_question(request):
-    '''Vote for a question. Only AJAX request by post method.'''
+    """Vote for a question. Only AJAX request by post method."""
 
     form = VoteForm(request.POST)
-
     if form.is_valid() and request.is_ajax():
         if not request.user.is_authenticated:
+
             return HttpResponseForbidden()
 
         target = form.cleaned_data["target_id"]
@@ -194,7 +195,7 @@ def vote_question(request):
 
 
 def approved_answer(request, pk):
-    '''Approved answer. Only AJAX request by post method.'''
+    """Approved answer. Only AJAX request by post method."""
     
     if not request.user.is_authenticated:
         return HttpResponseForbidden()

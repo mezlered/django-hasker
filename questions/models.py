@@ -1,9 +1,8 @@
-from django.db import models
 from django.contrib.auth import get_user_model
-from django.db.models import Count
 from django.core.exceptions import ObjectDoesNotExist
-from django.utils import timezone
-from datetime import datetime
+from django.db import models
+from django.db.models import Count
+
 
 User = get_user_model()
 
@@ -39,14 +38,17 @@ class AbstactPost(models.Model):
         try:
             current = self.vote_class.objects.get(to=self, author=user)
         except ObjectDoesNotExist:
-            self.vote_class.objects.create(to=self, author=user, vlue_vote=value)
-            return self.rating + value
+            self.vote_class.objects.create(to=self, author=user, value_vote=value)
+            current = self.vote_class.objects.get(to=self, author=user)
+            self.rating += value
+            return self.rating
 
-        if current.vlue_vote == value:
+        if current.value_vote == value:
             return self.rating
 
         self.vote_class.objects.filter(to=self, author=user).delete()
-        return self.rating + value
+        self.rating += value
+        return self.rating
 
 
 class AbstractVote(models.Model):
@@ -59,7 +61,7 @@ class AbstractVote(models.Model):
         abstract = True
 
     time_vote = models.DateField(auto_now=True)
-    vlue_vote = models.SmallIntegerField(choices=VOTE_CHOICES)
+    value_vote = models.SmallIntegerField(choices=VOTE_CHOICES)
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -124,14 +126,14 @@ class Answer(AbstactPost):
     vote_class = AnswerVote
     question = models.ForeignKey(
         Question,
-        related_name='answer',
+        related_name="answer",
         on_delete=models.CASCADE,
     )
     is_accepted = models.BooleanField(default=False)
 
 
     def accepted(self):
-        '''Accept answer'''
+        """Accept answer"""
 
         self.question.answer.update(is_accepted=False)
         self.is_accepted = True
@@ -139,7 +141,7 @@ class Answer(AbstactPost):
 
 
     def unaccepted(self):
-        '''Cansel answer'''
+        """Cansel answer"""
 
         self.is_accepted = False
         self.save(update_fields=["is_accepted"])
