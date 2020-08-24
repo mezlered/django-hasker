@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'questions.apps.QuestionsConfig',
     'api.apps.ApiConfig',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -121,6 +122,16 @@ VERSION = (1,0)
 
 API_VERSION = f'v{VERSION[0]}_{VERSION[1]}'
 
+# DRF settings
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
