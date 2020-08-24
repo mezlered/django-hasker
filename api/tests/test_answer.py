@@ -38,7 +38,6 @@ class AnswersTests(CreateDataMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-
     def test_accept_answer_unauthorized(self):
         question_author = self.create_user()
         question = self.create_question(user=question_author)

@@ -37,7 +37,6 @@ class QuestionsTests(CreateDataMixin, APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['id'], questions[2].id)
 
-
     def test_questions_post_unauthorized(self):
         url = reverse('apiapp:api_questions')
         response = self.client.post(
@@ -60,7 +59,6 @@ class QuestionsTests(CreateDataMixin, APITestCase):
         self.assertEqual(data.get('author'), user.id)
         self.assertEqual(data.get('description'), question.description)
         self.assertEqual(data.get('title'), question.title)
-
 
     def test_question_votes_get(self):
         user = self.create_user()

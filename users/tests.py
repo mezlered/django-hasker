@@ -29,14 +29,12 @@ class TestLogIn(CreateDataMixin, TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed("users/login.html")
 
-
     def test_GET_authorized(self):
         client = Client()
         client.login(username=TEST_USER, password=TEST_PASSWORD)
         response = client.get(reverse("question:index"))
 
         self.assertEqual(response.status_code, 200)
-
 
     def test_POST_authorized(self):
         client = Client()
@@ -49,7 +47,6 @@ class TestLogIn(CreateDataMixin, TestCase):
         response = client.post(reverse("users:login"), follow=True)
 
         self.assertRedirects(response, reverse("users:settings"))
-
 
     def test_POST_unauthorized(self):
         client = Client()
@@ -69,7 +66,6 @@ class TestLogOut(CreateDataMixin, TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse("question:index"))
-
 
     def test_POST_authorized(self):
         client = Client()
@@ -93,14 +89,12 @@ class TestSignUp(CreateDataMixin, TestCase):
 
         self.assertRedirects(response, reverse("question:index"))
 
-
     def test_POST_authorized(self):
         client = Client()
         client.login(username=TEST_USER, password=TEST_PASSWORD)
         response = client.post(reverse("users:signup"), follow=True)
 
         self.assertRedirects(response, reverse("question:index"))
-
 
     def test_POST_registration(self):
         client = Client()
@@ -126,7 +120,6 @@ class TestSettings(CreateDataMixin, TestCase):
         response = client.get(reverse("users:settings"))
         self.assertRedirects(response, reverse("users:login"))
 
-
     def test_GET_authorized(self):
         client = Client()
         client.login(username=TEST_USER, password=TEST_PASSWORD)
@@ -134,14 +127,12 @@ class TestSettings(CreateDataMixin, TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed("users/settings.html")
 
-
     def test_POST_unauthorized(self):
         client = Client()
         response = client.post(
             reverse("users:settings"), data={"email": "some_new_email@mail.fake"}
         )
         self.assertRedirects(response, reverse("users:login"))
-
 
     def test_POST_authorized(self):
         client = Client()
