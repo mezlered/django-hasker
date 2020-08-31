@@ -10,7 +10,7 @@
 
       <input type="text" class="form-control mb-4" placeholder="Username" name="username"
             required
-            {% if form.username.value != None %}value="{{ form.username.value|stringformat:'s' }}"{% endif %}
+            {% if form.username.value %}value="{{ form.username.value|stringformat:'s' }}"{% endif %}
       >
       {% if form.username.errors %}
       <div class="text-danger">{{ form.username.errors }}</div>
@@ -19,7 +19,7 @@
       <input type="password"  class="form-control" placeholder="Password" 
             name="password" aria-describedby="defaultRegisterFormPasswordHelpBlock"
             required
-            {% if form.password1.value != None %}value="{{ form.password.value|stringformat:'s' }}"{% endif %}
+            {% if form.password1.value %}value="{{ form.password.value|stringformat:'s' }}"{% endif %}
         >
       <br>
       {% if form.password.errors %}

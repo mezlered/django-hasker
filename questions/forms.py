@@ -30,8 +30,7 @@ class AskForm(forms.ModelForm):
             Question.objects.get(title__iexact=title.strip())
         except ObjectDoesNotExist:
             return title
-        raise forms.ValidationError(
-            "A topic with the same name already exists.")
+        raise forms.ValidationError("A topic with the same name already exists.")
 
     def clean_tags(self):
         tags = self.cleaned_data["tags"]

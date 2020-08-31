@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from config.base import MEDIA_ROOT
 
 
 def user_photo_path(instance, filename):
@@ -16,6 +17,6 @@ class User(AbstractUser):
 
     def save(self, *args, **kwargs):
         if not self.photo:
-            self.photo = static("user/avatar.png")
+            self.photo = f"{MEDIA_ROOT}/user/avatar.png"
             self.save()
         super().save(*args, **kwargs)

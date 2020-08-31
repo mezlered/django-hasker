@@ -18,7 +18,7 @@
                 E-mail:
                 <input type="email" class="form-control mb-4" placeholder="E-mail" name="email"
                         required
-                        {% if form.email.value != None %}value="{{ form.email.value|stringformat:'s' }}"{% endif %} 
+                        {% if form.email.value %}value="{{ form.email.value|stringformat:'s' }}"{% endif %} 
                 >
                {% if form.email.errors %}
                 <div class="text-danger">{{ form.email.errors }}</div>

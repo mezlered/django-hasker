@@ -1,19 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.db.models import Q
-from django.http import HttpResponseForbidden, JsonResponse, Http404, request
+from django.http import Http404, HttpResponseForbidden, JsonResponse, request
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic.list import ListView
 
+from config.base import PAGITATE_BY
 from users.mixins import UserRequired
 
 from .forms import AnswerForm, AskForm, SearchForm, VoteForm
 from .mixins import TredingMixin
 from .models import Answer, Question
-
-PAGITATE_BY = 10
 
 
 class QuestionsListView(TredingMixin, ListView):

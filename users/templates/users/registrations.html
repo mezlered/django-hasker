@@ -10,7 +10,7 @@
       <div class="input-group">
         <input type="text" class="form-control mb-4" placeholder="Username" name="username"
               required
-              {% if form.username.value != None %}value="{{ form.username.value|stringformat:'s' }}"{% endif %}
+              {% if form.username.value %}value="{{ form.username.value|stringformat:'s' }}"{% endif %}
         >
       </div>
 
@@ -20,7 +20,7 @@
 
       <input type="email" class="form-control mb-4" placeholder="E-mail" name="email"
             required
-            {% if form.email.value != None %}value="{{ form.email.value|stringformat:'s' }}"{% endif %} 
+            {% if form.email.value %}value="{{ form.email.value|stringformat:'s' }}"{% endif %} 
       >
       {% if form.email.errors %}
       <div class="text-danger">{{ form.email.errors }}</div>
@@ -29,7 +29,7 @@
       <input type="password"  class="form-control" placeholder="Password" 
             name="password1" aria-describedby="defaultRegisterFormPasswordHelpBlock"
             required
-            {% if form.password1.value != None %}value="{{ form.password1.value|stringformat:'s' }}"{% endif %}
+            {% if form.password1.value %}value="{{ form.password1.value|stringformat:'s' }}"{% endif %}
         >
       <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-0">
         At least 8 characters
@@ -41,7 +41,7 @@
       <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Confirm password"
             name="password2" aria-describedby="defaultRegisterFormPasswordHelpBlock"
             required
-            {% if form.password2.value != None %}value="{{ form.password2.value|stringformat:'s' }}"{% endif %}
+            {% if form.password2.value %}value="{{ form.password2.value|stringformat:'s' }}"{% endif %}
        >
       <small class="form-text text-muted mb-4"></small>
       {% if form.password2.errors %}

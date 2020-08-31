@@ -3,11 +3,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import Count
 
+from config.base import VOTE_DOWN, VOTE_UP
 
 User = get_user_model()
 
-VOTE_UP = 1
-VOTE_DOWN = -1
+
 VOTE_CHOICES = ((VOTE_UP, "Vote Up"), (VOTE_DOWN, "Vote Down"))
 
 

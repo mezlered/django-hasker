@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import FormView, LoginView, LogoutView
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
-from .forms import SignUpForm, SettingsForm, AccountLoginForm
-from django.contrib.auth.views import (
-    LoginView, LogoutView, FormView,
-)
 
 from questions.views import TredingMixin
+
+from .forms import SettingsForm, SignUpForm
 from .mixins import AnonimousRequired, UserRequired
 
 
@@ -34,7 +34,7 @@ class AccountLogoutView(TredingMixin, UserRequired, LogoutView):
 
 class AccountLoginView(TredingMixin, AnonimousRequired, LoginView):
     template_name = 'users/login.html'
-    form_class = AccountLoginForm
+    form_class = AuthenticationForm
     page_url = reverse_lazy('users:settings')
 
 

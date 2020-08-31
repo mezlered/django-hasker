@@ -28,11 +28,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users.apps.UsersConfig',
-    'questions.apps.QuestionsConfig',
     'api.apps.ApiConfig',
+    'questions.apps.QuestionsConfig',
     'rest_framework',
     'rest_framework.authtoken',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -115,6 +115,13 @@ USE_L10N = True
 USE_TZ = True
 
 LOGIN_REDIRECT_URL = '/'
+
+
+PAGITATE_BY = 10
+
+#Q/A model
+VOTE_UP = 1
+VOTE_DOWN = -1
 
 
 #rest framework
